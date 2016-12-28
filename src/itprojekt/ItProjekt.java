@@ -8,13 +8,8 @@ package itprojekt;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import static java.util.Collections.list;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -29,14 +24,14 @@ import javafx.stage.Stage;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.sl.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 //TODO:
-//Github einbinden
-//Datenmodell Bike überlegen
 //Exceltabelle Bahn/Bike anbinden
-//Auslesung &Umwandlung der Daten in gegebenes Format
+//Datenmodell Bike überlegen mit jul
+//Auslesung &Umwandlung der Daten in gegebenes Format mit JUl
 //Daten in list schmeißen um einfach im Graph überzugeben
 //Hin & Rückfahrt beachten(20 Minuten) korridor
 
@@ -45,6 +40,7 @@ import org.apache.poi.ss.usermodel.Workbook;
  * @author Martin
  */
 public class ItProjekt extends Application {
+    
         BahnObjekt d1 = new BahnObjekt(1,"U6",1,"00:35:00",519,100);
         BahnObjekt d2 = new BahnObjekt(2,"U6",2,"01:40:00",519,80);
         BahnObjekt d3 = new BahnObjekt(3,"U6",1,"08:40:00",519,50);
@@ -92,7 +88,22 @@ public class ItProjekt extends Application {
         }
         
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException, IOException {
+                        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\Martin\\Desktop\\IT projekt\\ubahn.xlsx");
+                        //"C:/Users/Martin/Desktop/projekt/ubahn.xlsx""
+                        //"C:\Users\Martin\Desktop\IT projekt\\ubahn.xlsx"
+                        //Workbook ist das Sysnonym für Exceldatei
+                        XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream); 
+                        //sheet ist die Excel-Seite, alternativ getsheet("zoo") statt int parameter
+			XSSFSheet worksheet1 = workbook.getSheetAt(0);
+			XSSFRow row1 = worksheet1.getRow(0);
+                        //verkürzt System.out.println(XSSFCell cellA1 = row1.getCell(0).getStringCellValue()); loook video
+			XSSFCell cellA1 = row1.getCell(0);
+			String a1Val = cellA1.getStringCellValue();
+			XSSFCell cellB1 = row1.getCell( 1);
+			String b1Val = cellB1.getStringCellValue();
+			System.out.println("A1: " + a1Val);
+			System.out.println("B1: " + b1Val);
             try {
                 init(primaryStage);
             } catch (IOException ex) {
@@ -104,18 +115,7 @@ public class ItProjekt extends Application {
     }
 
     public static void main(String[] args) throws FileNotFoundException, IOException  {
-//			FileInputStream fileInputStream = new FileInputStream("C:/Users/Martin/Desktop/projekt/ubahn.xls");
-//                        //"C:/Users/Martin/Desktop/projekt/ubahn.xls"
-//                        //"C:\\Users\\Martin\\Desktop\\IT projekt\\ubahn.xls"
-//			HSSFWorkbook workbook = new HSSFWorkbook(fileInputStream);
-//			HSSFSheet worksheet = workbook.getSheet("POI Worksheet");
-//			HSSFRow row2 = worksheet.getRow(0);
-//			HSSFCell cellA1 = row2.getCell((short) 0);
-//			String a1Val = cellA1.getStringCellValue();
-//			HSSFCell cellB1 = row2.getCell((short) 1);
-//			String b1Val = cellB1.getStringCellValue();
-//			System.out.println("A1: " + a1Val);
-//			System.out.println("B1: " + b1Val);
+
         launch(args);
     } 
 }
